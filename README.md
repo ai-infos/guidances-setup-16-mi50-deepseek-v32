@@ -12,17 +12,19 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 
 ## Hardware details
 
-- 16x AMD MI50 32GB
+- 16x AMD MI50 32GB (with 2 small fans 50mm per GPU at the back)
 - Motherboard with 7 PCIe 4.0 ports x16 (ROMED8-2T)
 - AMD EPYC CPU with 128 lanes (like 7642 with its 48 cores 2.3 GHz or other)
 - 2x 64 GB ram DDR4 3200 ECC
-- 4x PSU 1600W (with 3 add2psu)
+- 4x PSU 1800W (with 3 add2psu)
 - 12x SlimSAS PCIe device adapters 2x 8i
 - 4x SlimSAS PCie device 1x 4i (C-payne)
 - 12x SlimSAS cables 8i
 - 2x SlimSAS cable 8i to 2x4i
 - 7x SlimSAS PCIe host adapter
 - 1x NVME drive
+- 4x PWM HUB FAN Sata
+- (optional) 10x Fans 140mm 
 
 ## Software details
 
