@@ -8,7 +8,7 @@
 **Power draw**: 550W (idle) / 2400W (peak inference)
 
 **Feel free to ask any questions and/or share any comments in the issues section here or in the medium article:** 
-
+https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deepseek-v3-2-vllm-gfx906-70e28ac70957
 
 ## Hardware details
 
@@ -164,7 +164,7 @@ Go to http://localhost:8080 and enjoy Deepseek v3.2 locally!
 - add docker files for easy setup
 - open source a future test setup of 32 AMD MI50 32GB for Kimi K2 Thinking
 
-## FINAL NOTE
+## FINAL NOTES
 
 - You can find more technical details about the vllm-gfx906-deepseek fork in this PR: https://github.com/nlzy/vllm-gfx906/pull/62 
 - That's a first attempt and this is not the most optimized setup to run Deepseek v3.2 on gfx906 hardware (most ops are still pure pytorch functions!), so there's still a lot of room for speed/memory/stability improvements. It would be great to have someone with AMD/ROCM kernel skills to work on it and improve this proposal! 
