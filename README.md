@@ -26,6 +26,14 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 - 4x PWM HUB FAN Sata
 - (optional) 10x Fans 140mm 
 
+### Some relevant advices to avoid fires (non-exhaustive):
+
+1) Do your own researches and always understand what you do when it's related to safety.
+2) Draw an electrical plan of your home (avoid trusting existing plan, especially for old building) and check the maximum amperage/voltage allowed per circuit / power strip / smart plug. 
+3) Always check the specs of the PSU you want to buy to see max wattage per cable (usually but not always: SATA ~54W, Molex ~132W, 6pin ~75W, 8pin ~150W per cable). The 'per cable' is important because it means that if you have 1 cable with 2*8pin at the end, it's actually 75W per 8pin in this case. For example, if you have a PSU saying that it has 8*(2*8pin), it's in total 16 8pin but you can only power 4 MI50 (having each 2*8pin and requiring 300W per card). /!\ Even if you cap the power draw of you card to 150W, this is not advised to plug only 1 cable of 2*8pin; this is better to have 2 cables of 2*8pin per MI50, and for the remaining 8pin, it can be used for the extender (if 6+2pin). 
+4) Don't forget that your PSU needs also the right number of SATA/molex/6pin for PWM HUB, add2psu and extenders (extenders with molex or 6 pin are better than sata as they usually required more power to be steady)
+5) The fan port of your motherboard usually supports ~1A so don't plug too many fans (having more than 1A in total) on it, if you don't want to burn your motherboard (or more). That's why PWM HUB FAN is often required for this kind of setup as the motherboard does not have enough fan ports.
+
 ## Software details
 
 - Ubuntu v24.04
@@ -33,13 +41,14 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 - torch v2.9
 - triton-gfx906 v3.5
 - vllm-gfx906-deepseek v0.12.0
-- MI50 bios: 32G_UEFI.rom  
+- MI50 bios: 32G_UEFI.rom  (available there: https://gist.github.com/evilJazz/14a4c82a67f2c52a6bb5f9cea02f5e13 /!\ don't flash your bios if you don't know what you do; the stock bios might work in your setup)
 - open-webui
 - Custom motherboard bios to boot with 16 MI50: ask ASRock Rack support for this ROM or in the meantime, boot with 14 GPU and use hotplug to make it run with 16 under Ubuntu (see below for more details)
 
-## Run 16 AMD MI50 under Ubuntu
 
-1) Modify the following motherboard bios settings from default (NB: some setting modifications are optional):
+## Run 16 AMD MI50 under Ubuntu (required: hotplug support for the motherboard) if boot is capped at 14 GPU
+
+1) Modify the following motherboard bios settings from default (NB: some setting modifications are optional and some settings might be shown differently for your bios/motherboard):
 
 - advanced > chipset config > primary graphic adapter: onboard / onboard debug port LED: off
 - advanced > chipset config > amd pcie link speed > pcie1 to 7 gen3, ocu1 ocu2 m2_1 gen1, m2_2 gen4 / amd pcie link width > pcie1 x4x4x4x4 and all other pcie x8x8 / amd pcie hot plug > pcie7 hotplug: enabled
