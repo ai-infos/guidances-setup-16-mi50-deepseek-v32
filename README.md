@@ -40,7 +40,7 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 - ROCM v6.3.4
 - torch v2.9
 - triton-gfx906 v3.5
-- vllm-gfx906-deepseek v0.12.0
+- vllm-gfx906-deepseek v0.12.0 (https://github.com/ai-infos/vllm-gfx906-deepseek/tree/gfx906/v0.12.0)
 - MI50 bios: 32G_UEFI.rom  (available there: https://gist.github.com/evilJazz/14a4c82a67f2c52a6bb5f9cea02f5e13 /!\ don't flash your bios if you don't know what you do; the stock bios might work in your setup)
 - open-webui
 - Custom motherboard bios to boot with 16 MI50: ask ASRock Rack support for this ROM or in the meantime, boot with 14 GPU and use hotplug to make it run with 16 under Ubuntu (see below for more details)
