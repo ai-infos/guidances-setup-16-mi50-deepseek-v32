@@ -142,7 +142,7 @@ huggingface-cli download QuantTrio/DeepSeek-V3.2-AWQ --local-dir ./DeepSeek-V3.2
 ```code
 PYTORCH_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=4 VLLM_ROCM_USE_LEGACY_TRITON_FA=1 VLLM_ATTENTION_BACKEND="ROCM_AITER_MLA_SPARSE" VLLM_ROCM_USE_AITER_MLA_SPARSE_FP16=1 VLLM_ROCM_USE_AITER=0 NCCL_P2P_DISABLE=1 VLLM_MLA_DISABLE=0 VLLM_USE_TRITON_AWQ=1 NCCL_DEBUG=INFO vllm serve ~/llm/models/DeepSeek-V3.2-AWQ \
     --served-model-name DeepSeek-V3.2-AWQ  \
-    --tensor-parallel-size 16 --pipeline-parallel-size \
+    --tensor-parallel-size 16 --pipeline-parallel-size 1 \
     --max-model-len 32748 --gpu-memory-utilization 0.85 \
     --speculative-config '{"model": "{YOUR_EXACT_FOLDER}/llm/models/DeepSeek-V3.2-AWQ", "num_speculative_tokens": 1}' \
     --tokenizer-mode deepseek_v32 \
