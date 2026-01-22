@@ -121,7 +121,7 @@ pip install ./dist/triton-*.whl
 # VLLM
 
 git clone --branch v0.12.0+gfx906.update1 --single-branch https://github.com/ai-infos/vllm-gfx906-deepseek.git
-cd vllm-gfx906
+cd vllm-gfx906-deepseek
 pip install 'cmake>=3.26.1,<4' 'packaging>=24.2' 'setuptools>=77.0.3,<80.0.0' 'setuptools-scm>=8' 'jinja2>=3.1.6' 'amdsmi>=6.3,<6.4' 'timm>=1.0.17'
 pip install -r requirements/rocm.txt
 pip wheel --no-build-isolation -v -w dist . 2>&1 | tee build.log
