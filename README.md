@@ -36,7 +36,7 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 
 ## Software details
 
-- Ubuntu v24.04
+- Ubuntu v24.04 (kernel: 6.11.0-17-generic)
 - ROCM v6.3.4
 - torch v2.9
 - triton-gfx906 v3.5
