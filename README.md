@@ -40,7 +40,7 @@ https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deeps
 - ROCM v6.3.4
 - torch v2.9
 - triton-gfx906 v3.5
-- vllm-gfx906-deepseek v0.12.0 (https://github.com/ai-infos/vllm-gfx906-deepseek/tree/gfx906/v0.12.0)
+- vllm-gfx906-mobydick v0.16.0.x (https://github.com/ai-infos/vllm-gfx906-mobydick/tree/gfx906/v0.16.0.x)
 - MI50 bios: 32G_UEFI.rom  (available there: https://gist.github.com/evilJazz/14a4c82a67f2c52a6bb5f9cea02f5e13 /!\ don't flash your bios if you don't know what you do; the stock bios might work in your setup)
 - open-webui
 - Custom motherboard bios to boot with 16 MI50: ask ASRock Rack support for this ROM or in the meantime, boot with 14 GPU and use hotplug to make it run with 16 under Ubuntu (see below for more details)
@@ -183,7 +183,7 @@ Go to http://localhost:8080 and enjoy Deepseek v3.2 locally!
 
 ## FINAL NOTES
 
-- You can find more technical details about the vllm-gfx906-deepseek fork in this PR: https://github.com/nlzy/vllm-gfx906/pull/62 
+- You can find more technical details about the vllm-gfx906-mobydick fork (ex vllm-gfx906-deepseek) in this PR: https://github.com/nlzy/vllm-gfx906/pull/62 
 - That's a first attempt and this is not the most optimized setup to run Deepseek v3.2 on gfx906 hardware (most ops are still pure pytorch functions!), so there's still a lot of room for speed/memory/stability improvements. It would be great to have someone with AMD/ROCM kernel skills to work on it and improve this proposal! 
 - To me, it's worth it, because for now, having good speed in PP and TG requires a setup of 300k$ to run Deepseek...now with 16 MI50, that's around 1/100th the price for 1/10th the speed!  
 
