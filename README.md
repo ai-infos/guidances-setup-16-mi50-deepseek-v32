@@ -100,7 +100,7 @@ cat /proc/cmdline  # >>> to check: must return: "BOOT_IMAGE=... iommu=pt"
 
 ```
 
-### vllm-gfx906-deepseek fork with its dependencies (torch, triton, python, etc)
+### vllm-gfx906-mobydick fork with its dependencies (torch, triton, python, etc)
 
 ```code
 
@@ -120,8 +120,8 @@ pip install ./dist/triton-*.whl
 
 # VLLM
 
-git clone --branch v0.12.0+gfx906.update1 --single-branch https://github.com/ai-infos/vllm-gfx906-deepseek.git
-cd vllm-gfx906-deepseek
+git clone --branch gfx906/v0.16.0.x --single-branch https://github.com/ai-infos/vllm-gfx906-mobydick
+cd vllm-gfx906-mobydick
 pip install 'cmake>=3.26.1,<4' 'packaging>=24.2' 'setuptools>=77.0.3,<80.0.0' 'setuptools-scm>=8' 'jinja2>=3.1.6' 'amdsmi>=6.3,<6.4' 'timm>=1.0.17'
 pip install -r requirements/rocm.txt
 pip wheel --no-build-isolation -v -w dist . 2>&1 | tee build.log
@@ -137,29 +137,30 @@ pip install -U "huggingface_hub[cli]"
 huggingface-cli download QuantTrio/DeepSeek-V3.2-AWQ --local-dir ./DeepSeek-V3.2-AWQ
 ```
 
-### Run DEEPSEEK V3.2 in vllm-gfx906-deepseek
+### Run DEEPSEEK V3.2 in vllm-gfx906-mobydick
 
 ```code
-PYTORCH_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=4 VLLM_ROCM_USE_LEGACY_TRITON_FA=1 VLLM_ATTENTION_BACKEND="ROCM_AITER_MLA_SPARSE" VLLM_ROCM_USE_AITER_MLA_SPARSE_FP16=1 VLLM_ROCM_USE_AITER=0 NCCL_P2P_DISABLE=1 VLLM_MLA_DISABLE=0 VLLM_USE_TRITON_AWQ=1 NCCL_DEBUG=INFO vllm serve ~/llm/models/DeepSeek-V3.2-AWQ \
-    --served-model-name DeepSeek-V3.2-AWQ  \
+VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=1200 PYTORCH_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=4 FLASH_ATTENTION_TRITON_AMD_ENABLE="TRUE" \
+VLLM_ROCM_MLA_SPARSE_FP16=1 VLLM_ROCM_MLA_SPARSE_FP16_TRITON=1 VLLM_MLA_DISABLE=0 vllm serve ~/llm/models/DeepSeek-V3.2-AWQ \
+    --served-model-name DeepSeek-V3.2-AWQ \
     --tensor-parallel-size 16 --pipeline-parallel-size 1 \
-    --max-model-len 32748 --gpu-memory-utilization 0.85 \
-    --speculative-config '{"model": "{YOUR_EXACT_FOLDER}/llm/models/DeepSeek-V3.2-AWQ", "num_speculative_tokens": 1}' \
+    --max-model-len 32748 --gpu-memory-utilization 0.92 \
     --tokenizer-mode deepseek_v32 \
     --tool-call-parser deepseek_v32 \
     --enable-auto-tool-choice \
     --reasoning-parser deepseek_v3 \
-    --block-size 1 \
-    --max-num-seqs 32 \
-    --max-num-batched-tokens 512 \
+    --block-size 64 \
+    --max-num-seqs 4 \
+    --max-num-batched-tokens 2048 \
+    --speculative-config '{"model": "/home/rig8/llm/models/DeepSeek-V3.2-AWQ", "num_speculative_tokens": 1}' \
     --no-enable-prefix-caching \
-    --kv-cache-dtype auto \
+    --dtype float32 \
+    --kv-cache-dtype half \
     --swap-space 0 2>&1 | tee log.txt
 ```
 
-**Performance peak**: TG (token generation): 10 tok/s / PP (prompt processing): variable according to request length (911 tok -> 91,1 tok/s ; 17k tok -> 1700 tok/s etc... but a long request implies also longer pre processing, it lasts in reality ~8min50 to handle 17k tok request before decoding phase)
+**Performance peak**: TG (token generation): 11.5 tok/s / PP (prompt processing): variable according to request length (911 tok -> 91,1 tok/s ; 17k tok -> 1700 tok/s etc... but a long request implies also longer pre processing, it lasts in reality ~8min50 to handle 17k tok request before decoding phase)
 
-**/!\ In last tag v0.12.0+gfx906.update1, there's still some stability issues (with garbage output) after ~18k+ tokens context** 
 
 ### Run Open-WebUI
 
