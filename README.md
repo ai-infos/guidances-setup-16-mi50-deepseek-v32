@@ -7,8 +7,9 @@
 
 **Power draw**: 550W (idle) / 2400W (peak inference)
 
-**Feel free to ask any questions and/or share any comments in the issues section here or in the medium article:** 
-https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deepseek-v3-2-vllm-gfx906-70e28ac70957
+**Feel free to ask any questions and/or share any comments in the issues section here or in the medium article or in the reddit publication:** 
+ - https://medium.com/@ai-infos/16x-amd-mi50-32gb-at-10-t-s-tg-2k-t-s-pp-with-deepseek-v3-2-vllm-gfx906-70e28ac70957
+ - https://www.reddit.com/r/LocalLLaMA/comments/1q6n5vl/16x_amd_mi50_32gb_at_10_ts_tg_2k_ts_pp_with/
 
 ## Hardware details
 
