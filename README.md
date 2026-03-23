@@ -111,17 +111,22 @@ pyenv activate venv312
 
 # TRITON
 
-git clone --branch v3.5.0+gfx906 https://github.com/nlzy/triton-gfx906.git
+git clone --branch v3.5.1+gfx906 https://github.com/ai-infos/triton-gfx906.git
 cd triton-gfx906
-pip install 'torch==2.9' torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.3  
+pip install 'torch==2.9.1' torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.3  
 pip install -r python/requirements.txt
 pip wheel --no-build-isolation -w dist . 2>&1 | tee build.log
 pip install ./dist/triton-*.whl  
 
+# FLASH-ATTENTION-GFX906 (triton backend)
+
+git clone https://github.com/ai-infos/flash-attention-gfx906.git
+cd flash-attention-gfx906
+FLASH_ATTENTION_TRITON_AMD_ENABLE="TRUE" python setup.py install
 
 # VLLM
 
-git clone --branch gfx906/v0.16.0.x --single-branch https://github.com/ai-infos/vllm-gfx906-mobydick
+git clone --branch gfx906/v0.18.1rc0.x --single-branch https://github.com/ai-infos/vllm-gfx906-mobydick
 cd vllm-gfx906-mobydick
 pip install 'cmake>=3.26.1,<4' 'packaging>=24.2' 'setuptools>=77.0.3,<80.0.0' 'setuptools-scm>=8' 'jinja2>=3.1.6' 'amdsmi>=6.3,<6.4' 'timm>=1.0.17'
 pip install -r requirements/rocm.txt
@@ -140,9 +145,13 @@ huggingface-cli download QuantTrio/DeepSeek-V3.2-AWQ --local-dir ./DeepSeek-V3.2
 
 ### Run DEEPSEEK V3.2 in vllm-gfx906-mobydick
 
+NB: Add chat_template_kwargs {"thinking": true} to enable thinking mode in the tool using the LLM (open-webUI other)
+
 ```code
+pip install transformers==5.3.0
+
 VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=1200 PYTORCH_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=4 FLASH_ATTENTION_TRITON_AMD_ENABLE="TRUE" \
-VLLM_ROCM_MLA_SPARSE_FP16=1 VLLM_ROCM_MLA_SPARSE_FP16_TRITON=1 VLLM_MLA_DISABLE=0 vllm serve ~/llm/models/DeepSeek-V3.2-AWQ \
+VLLM_ROCM_MLA_SPARSE_FP16=1 VLLM_ROCM_MLA_SPARSE_FP16_TRITON=1 VLLM_MLA_DISABLE=0 VLLM_LOGGING_LEVEL=DEBUG NCCL_DEBUG=INFO vllm serve ~/llm/models/DeepSeek-V3.2-AWQ \
     --served-model-name DeepSeek-V3.2-AWQ \
     --tensor-parallel-size 16 --pipeline-parallel-size 1 \
     --max-model-len 32748 --gpu-memory-utilization 0.92 \
@@ -153,14 +162,17 @@ VLLM_ROCM_MLA_SPARSE_FP16=1 VLLM_ROCM_MLA_SPARSE_FP16_TRITON=1 VLLM_MLA_DISABLE=
     --block-size 64 \
     --max-num-seqs 4 \
     --max-num-batched-tokens 2048 \
-    --speculative-config '{"model": "/home/rig8/llm/models/DeepSeek-V3.2-AWQ", "num_speculative_tokens": 1}' \
+    --speculative-config '{"model": "{EXACT_PATH}/llm/models/DeepSeek-V3.2-AWQ", "num_speculative_tokens": 1}' \
     --no-enable-prefix-caching \
     --dtype float32 \
     --kv-cache-dtype half \
-    --swap-space 0 2>&1 | tee log.txt
+    --enable-log-requests \
+    --enable-log-outputs \
+    --log-error-stack \
+    2>&1 | tee log.txt
 ```
 
-**Performance peak**: TG (token generation): 11.5 tok/s / PP (prompt processing): variable according to request length (911 tok -> 91,1 tok/s ; 17k tok -> 1700 tok/s etc... but a long request implies also longer pre processing, it lasts in reality ~8min50 to handle 17k tok request before decoding phase)
+**Performance peak**: TG (token generation): 11.8 tok/s / PP (prompt processing): variable according to request length (911 tok -> 91,1 tok/s ; 17k tok -> 1700 tok/s etc... but a long request implies also longer pre processing, it lasts in reality ~5min00 to handle 17k tok request before decoding phase)
 
 
 ### Run Open-WebUI
