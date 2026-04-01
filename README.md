@@ -41,7 +41,7 @@
 - ROCM v6.3.4
 - torch v2.9
 - triton-gfx906 v3.5
-- vllm-gfx906-mobydick v0.16.0.x (https://github.com/ai-infos/vllm-gfx906-mobydick/tree/gfx906/v0.16.0.x)
+- vllm-gfx906-mobydick v0.17.1rc0.x (https://github.com/ai-infos/vllm-gfx906-mobydick/tree/gfx906/v0.17.1rc0.x)
 - MI50 bios: 32G_UEFI.rom  (available there: https://gist.github.com/evilJazz/14a4c82a67f2c52a6bb5f9cea02f5e13 /!\ don't flash your bios if you don't know what you do; the stock bios might work in your setup)
 - open-webui
 - Custom motherboard bios to boot with 16 MI50: ask ASRock Rack support for this ROM or in the meantime, boot with 14 GPU and use hotplug to make it run with 16 under Ubuntu (see below for more details)
@@ -126,7 +126,7 @@ FLASH_ATTENTION_TRITON_AMD_ENABLE="TRUE" python setup.py install
 
 # VLLM
 
-git clone --branch gfx906/v0.18.1rc0.x --single-branch https://github.com/ai-infos/vllm-gfx906-mobydick
+git clone --branch gfx906/v0.17.1rc0.x --single-branch https://github.com/ai-infos/vllm-gfx906-mobydick
 cd vllm-gfx906-mobydick
 pip install 'cmake>=3.26.1,<4' 'packaging>=24.2' 'setuptools>=77.0.3,<80.0.0' 'setuptools-scm>=8' 'jinja2>=3.1.6' 'amdsmi>=6.3,<6.4' 'timm>=1.0.17'
 pip install -r requirements/rocm.txt
