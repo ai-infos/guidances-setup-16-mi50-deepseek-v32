@@ -172,7 +172,11 @@ VLLM_ROCM_MLA_SPARSE_FP16=1 VLLM_ROCM_MLA_SPARSE_FP16_TRITON=1 VLLM_MLA_DISABLE=
     2>&1 | tee log.txt
 ```
 
-**Performance peak**: TG (token generation): 11.8 tok/s / PP (prompt processing): variable according to request length (911 tok -> 91,1 tok/s ; 17k tok -> 1700 tok/s etc... but a long request implies also longer pre processing, it lasts in reality ~5min00 to handle 17k tok request before decoding phase)
+**Performance peak**: TG (token generation): 11.8 tok/s / PP (prompt processing): 56 tok/s PP (~5min00 to handle 17k tok request before decoding phase)
+
+**IMPORTANT NOTES:** 
+- **Deepseek v3.2 is broken from vllm-gfx906-mobydick v0.20.1rc0 branch and won't be supported anymore for future vllm updates (issue: garbage output for --dtype float32  and --kv-cache-dtype float16 from 1k tokens prompt)**
+- **vllm-gfx906-mobydick v0.19.1rc0 branch has been tested OK with mixa3607 image: 'docker pull mixa3607/vllm-gfx906:0.19.1-rocm-7.2.1-aiinfos' and perf is slightly better: around 12-13 tok/s TG and around same PP speed**
 
 
 ### Run Open-WebUI
